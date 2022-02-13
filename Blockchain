@@ -1,0 +1,36 @@
+Build Status codecov.io
+
+pycoin -- Python Cryptocoin Utilities
+The pycoin library implements many utilities useful when dealing with bitcoin and some bitcoin-like alt-coins. It has been tested with Python 2.7, 3.6 and 3.7.
+
+See also pycoinnet for a library that speaks the bitcoin protocol.
+
+Documentation at readthedocs
+
+Discussion at zulipchat
+
+Networks
+As of 0.9, pycoin supports many coins to various degrees via the "network" class. Since specifications vary based on the network (for example, bitcoin mainnet addresses start with a "1", but testnet addresses start with an "m" or "n"), all API descends from a network object. Everything related to a particular network is scoped under this class.
+
+Bitcoin has the highest level of support, including keys, transactions, validation of signed transactions, and signing unsigned transactions, including partial signing of multisig transactions. These are in level of increasing complexity, so features for other coins will likely be supported in that order.
+
+There are two main ways to get a network:
+
+from pycoin.symbols.btc import network
+OR
+
+from pycoin.networks.registry import network_for_netcode
+network = network_for_netcode("BTC")
+Keys
+You can create a private key and get the corresponding address.
+
+from pycoin.symbols.btc import network
+
+key = network.keys.private(secret_exponent=1)  # this is a terrible key because it's very guessable
+print(key.wif())
+print(key.sec())
+print(key.address())
+print(key.address(is_compressed=False))
+
+same_key = network.parse.private(key.wif())
+print(same_key.address())
